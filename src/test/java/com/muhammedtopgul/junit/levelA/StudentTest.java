@@ -1,6 +1,7 @@
 package com.muhammedtopgul.junit.levelA;
 
 import com.muhammedtopgul.model.Student;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,22 +15,31 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @DisplayName("Level A (Beginner) Student Tests")
 public class StudentTest {
-    @Test
-    @DisplayName("Test every student must have an id, name and surname.")
-    void shouldCreateStudentWithIdNameAndSurname() {
-        Student student001 = Student.builder()
+    private Student student001;
+    private Student student002;
+    private Student student003;
+
+    @BeforeEach
+    void setUp() {
+        student001 = Student.builder()
                 .id("1")
                 .name("Muhammed")
                 .surname("Topgul")
                 .build();
 
-        Student student002 = Student.builder()
+        student002 = Student.builder()
                 .id("2")
                 .name("John")
                 .surname("Doe")
                 .build();
 
 
+        student003 = student002;
+    }
+
+    @Test
+    @DisplayName("Test every student must have an id, name and surname.")
+    void shouldCreateStudentWithIdNameAndSurname() {
         assertEquals("Muhammed", student001.getName());
         assertEquals("Muhammed", student001.getName(), "Student's name");
         assertNotEquals("Micheal", student001.getName(), "Student's name");
@@ -46,8 +56,38 @@ public class StudentTest {
         assertArrayEquals(new String[]{student001.getName(), student002.getName()},
                 studentsNameArray);
 
-        Student student003 = student002;
         assertSame(student003, student002);
         assertNotSame(student001, student002);
+    }
+
+    @Test
+    @DisplayName("Test every student must have an id, name and surname with grouped assertions.")
+    void shouldCreateStudentWithIdNameAndSurnameWithGroupedAssertions() {
+        assertAll("Student's id, name and surname check",
+                () -> assertEquals("Muhammed", student001.getName()),
+                () -> assertEquals("Topgul", student001.getSurname(), "Student's surname"),
+                () -> assertNotEquals("2", student001.getId(), "Student's id")
+        );
+
+        assertAll("Student's name character check",
+                () -> assertTrue(student001.getName().startsWith("M")),
+                () -> assertTrue(student001.getName().startsWith("Muh")),
+                () -> assertFalse(student002.getName().startsWith("Muh"))
+        );
+
+        assertAll("Dependent assertions",
+                () -> {
+                    Object[] studentsNameArray = Stream.of(student001, student002)
+                            .map(Student::getName)
+                            .toArray();
+
+                    assertArrayEquals(new String[]{student001.getName(), student002.getName()},
+                            studentsNameArray);
+                },
+                () -> {
+                    assertSame(student003, student002);
+                    assertNotSame(student001, student002);
+                }
+        );
     }
 }
