@@ -10,6 +10,8 @@ import java.time.Duration;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 /**
  * @author muhammed-topgul
@@ -126,5 +128,41 @@ public class StudentTest {
         assertTimeout(Duration.ofMillis(6), () -> student001.addCourse(lecturerCourseRecord));
 
         assertTimeoutPreemptively(Duration.ofMillis(6), () -> student001.addCourse(lecturerCourseRecord));
+    }
+
+    @Test
+    @DisplayName("Test student creation only development machine.")
+    void shouldCreateStudentWithNameAndSurnameAtDevelopmentMachine() {
+        assumeTrue(
+                System.getProperty("ENV") != null,
+                "Aborting Test: System property ENV doesn't exist!"
+        );
+
+        assumeTrue(
+                System.getProperty("ENV").equals("dev"),
+                "Aborting Test: Not on a developer machine!"
+        );
+
+        assertAll("Student information",
+                () -> assertEquals("Muhammed", student001.getName()),
+                () -> assertEquals("Topgul", student001.getSurname()),
+                () -> assertEquals("1", student001.getId())
+        );
+    }
+
+    @Test
+    @DisplayName("Test student creation at different environments.")
+    void shouldCreateStudentWithNameAndSurnameWithSpecificEnvironment() {
+        final String env = System.getProperty("ENV");
+        assumingThat(env != null && env.equals("dev"), () -> {
+            student001.addCourse(new LecturerCourseRecord());
+            assertEquals(1, student001.getStudentCourseRecords().size());
+        });
+
+        assertAll("Student information",
+                () -> assertEquals("Muhammed", student001.getName()),
+                () -> assertEquals("Topgul", student001.getSurname()),
+                () -> assertEquals("1", student001.getId())
+        );
     }
 }
