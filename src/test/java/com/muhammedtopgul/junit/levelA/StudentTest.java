@@ -1,10 +1,12 @@
 package com.muhammedtopgul.junit.levelA;
 
+import com.muhammedtopgul.model.LecturerCourseRecord;
 import com.muhammedtopgul.model.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +34,6 @@ public class StudentTest {
                 .name("John")
                 .surname("Doe")
                 .build();
-
 
         student003 = student002;
     }
@@ -106,5 +107,24 @@ public class StudentTest {
                 () -> student001.addCourse(null)
         );
         assertEquals("Can't add course with null lecturer course record", illegalArgumentException.getMessage());
+    }
+
+    @Test
+    @DisplayName("Add course to a student lecturer course record timeout.")
+    void addCourseToStudentWithATimeConstraint() {
+        assertTimeout(Duration.ofMillis(10), () -> {
+            // Nothing will be done and this code run under 10ms
+        });
+
+        final String result = assertTimeout(Duration.ofMillis(10), () -> {
+            // Return a string and this code run under 10ms
+            return "Some staring result";
+        });
+        assertEquals("Some staring result", result);
+
+        LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord();
+        assertTimeout(Duration.ofMillis(6), () -> student001.addCourse(lecturerCourseRecord));
+
+        assertTimeoutPreemptively(Duration.ofMillis(6), () -> student001.addCourse(lecturerCourseRecord));
     }
 }

@@ -25,6 +25,7 @@ public class Student {
     private String name;
     private String surname;
     private LocalDate birthDate;
+    @Builder.Default
     private Set<StudentCourseRecord> studentCourseRecords = new HashSet<>();
     private Department department;
 
