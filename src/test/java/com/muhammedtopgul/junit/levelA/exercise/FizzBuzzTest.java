@@ -1,5 +1,6 @@
-package com.muhammedtopgul.introduction;
+package com.muhammedtopgul.junit.levelA.exercise;
 
+import com.muhammedtopgul.exercise.FizzBuzz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

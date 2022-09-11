@@ -1,4 +1,4 @@
-package com.muhammedtopgul.junit.levelA;
+package com.muhammedtopgul.junit.levelA.domain;
 
 import com.muhammedtopgul.annotation.TestOnWindowsWithJre11;
 import com.muhammedtopgul.model.Student;

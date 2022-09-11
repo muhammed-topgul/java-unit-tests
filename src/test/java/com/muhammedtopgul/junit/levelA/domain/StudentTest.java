@@ -1,4 +1,4 @@
-package com.muhammedtopgul.junit.levelA;
+package com.muhammedtopgul.junit.levelA.domain;
 
 import com.muhammedtopgul.model.LecturerCourseRecord;
 import com.muhammedtopgul.model.Student;

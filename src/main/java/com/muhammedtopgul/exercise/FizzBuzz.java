@@ -1,4 +1,4 @@
-package com.muhammedtopgul.introduction;
+package com.muhammedtopgul.exercise;
 
 /**
  * @author muhammed-topgul

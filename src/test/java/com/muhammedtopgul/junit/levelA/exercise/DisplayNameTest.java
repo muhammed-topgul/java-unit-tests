@@ -1,4 +1,4 @@
-package com.muhammedtopgul.introduction;
+package com.muhammedtopgul.junit.levelA.exercise;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
