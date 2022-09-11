@@ -2,9 +2,7 @@ package com.muhammedtopgul.junit.levelA;
 
 import com.muhammedtopgul.model.LecturerCourseRecord;
 import com.muhammedtopgul.model.Student;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.Duration;
 import java.util.stream.Stream;
@@ -18,6 +16,7 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
  * @since 11/09/2022 16:38
  */
 @DisplayName("Level A (Beginner) Student Tests")
+@Tag("student")
 public class StudentTest {
     private Student student001;
     private Student student002;
@@ -41,6 +40,7 @@ public class StudentTest {
     }
 
     @Test
+    @Tag("createStudent")
     @DisplayName("Test every student must have an id, name and surname.")
     void shouldCreateStudentWithIdNameAndSurname() {
         assertEquals("Muhammed", student001.getName());
@@ -64,6 +64,7 @@ public class StudentTest {
     }
 
     @Test
+    @Tag("createStudent")
     @DisplayName("Test every student must have an id, name and surname with grouped assertions.")
     void shouldCreateStudentWithIdNameAndSurnameWithGroupedAssertions() {
         assertAll("Student's id, name and surname check",
@@ -95,6 +96,10 @@ public class StudentTest {
     }
 
     @Test
+    @Tags({
+            @Tag("addCourse"),
+            @Tag("exceptional")
+    })
     @DisplayName("Got an exception when add a null lecturer course record to student.")
     void throwsExceptionWhenAddToNullCourseToStudent() {
         assertThrows(IllegalArgumentException.class, () -> student001.addCourse(null));
@@ -112,6 +117,7 @@ public class StudentTest {
     }
 
     @Test
+    @Tag("addCourse")
     @DisplayName("Add course to a student lecturer course record timeout.")
     void addCourseToStudentWithATimeConstraint() {
         assertTimeout(Duration.ofMillis(10), () -> {
@@ -131,6 +137,7 @@ public class StudentTest {
     }
 
     @Test
+    @Tag("createStudent")
     @DisplayName("Test student creation only development machine.")
     void shouldCreateStudentWithNameAndSurnameAtDevelopmentMachine() {
         assumeTrue(
@@ -151,6 +158,7 @@ public class StudentTest {
     }
 
     @Test
+    @Tag("createStudent")
     @DisplayName("Test student creation at different environments.")
     void shouldCreateStudentWithNameAndSurnameWithSpecificEnvironment() {
         final String env = System.getProperty("ENV");
