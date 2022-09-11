@@ -90,4 +90,21 @@ public class StudentTest {
                 }
         );
     }
+
+    @Test
+    @DisplayName("Got an exception when add a null lecturer course record to student.")
+    void throwsExceptionWhenAddToNullCourseToStudent() {
+        assertThrows(IllegalArgumentException.class, () -> student001.addCourse(null));
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> student001.addCourse(null),
+                "Throws IllegalArgumentException");
+
+        IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class,
+                () -> student001.addCourse(null)
+        );
+        assertEquals("Can't add course with null lecturer course record", illegalArgumentException.getMessage());
+    }
 }
