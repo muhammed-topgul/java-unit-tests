@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author muhammed-topgul
  * @since 12/09/2022 01:22
  */
-@DisplayName("Minimum Cost Path Test")
+@DisplayName("Level A (Beginner) Minimum Cost Path Tests")
 public class MinimumCostPathTest {
     private final int[][] matrix = new int[2][3];
     private MinimumCostPath minimumCostPath;

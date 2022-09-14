@@ -8,6 +8,7 @@ import java.util.Random;
  * @author muhammed-topgul
  * @since 11/09/2022 01:22
  */
+@DisplayName("Level A (Beginner) Standard Tests")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StandardTest {
     private static String oneInstancePerClass;

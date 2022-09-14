@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
  * @author muhammed-topgul
  * @since 11/09/2022 01:44
  */
-@DisplayName("Customized display name tests.")
+@DisplayName("Level A (Beginner) Display Name Tests.")
 public class DisplayNameTest {
     @Test
     @DisplayName("This is first test in this class.")

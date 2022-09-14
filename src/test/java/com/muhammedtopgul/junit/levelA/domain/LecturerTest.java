@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author muhammed-topgul
  * @since 15/09/2022 00:57
  */
-@DisplayName("Lecturer Tests")
+@DisplayName("Level A (Beginner) Lecturer Tests")
 public class LecturerTest {
     private Lecturer lecturer;
     private LecturerCourseRecord lecturerCourseRecord;

@@ -2,6 +2,7 @@ package com.muhammedtopgul.junit.levelA.exercise;
 
 import com.muhammedtopgul.exercise.FizzBuzz;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author muhammed-topgul
  * @since 11/09/2022 00:50
  */
+@DisplayName("Level A (Beginner)  FizzBuzz Tests")
 class FizzBuzzTest {
     private FizzBuzz fizzBuzz;
 

@@ -3,6 +3,7 @@ package com.muhammedtopgul.junit.levelA.domain;
 import com.muhammedtopgul.annotation.TestOnWindowsWithJre11;
 import com.muhammedtopgul.model.Student;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.*;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author muhammed-topgul
  * @since 11/09/2022 18:31
  */
+@DisplayName("Level A (Beginner) Student Conditional Tests")
 @EnabledOnOs(OS.WINDOWS)
 public class StudentConditionalTest {
     private Student student001;
