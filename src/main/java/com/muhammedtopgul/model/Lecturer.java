@@ -24,7 +24,6 @@ public class Lecturer {
     private Department department;
 
     public void addLecturerCourseRecord(LecturerCourseRecord lecturerCourseRecord) {
-
         if (lecturerCourseRecord.getCourse() == null) {
             throw new IllegalArgumentException("Can't add a null course to lecturer");
         }

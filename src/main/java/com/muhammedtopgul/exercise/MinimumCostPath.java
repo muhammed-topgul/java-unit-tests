@@ -8,13 +8,16 @@ import java.util.Objects;
  */
 public class MinimumCostPath {
     public int find(int[][] matrix, Cell start, Cell target) {
-        controlBounds(matrix, start);
-        controlBounds(matrix, target);
-
+        requiresCellsIsInBounds(matrix, start, target);
         if (start.equals(target)) {
             return matrix[start.row][start.column];
         }
         return 0;
+    }
+
+    private void requiresCellsIsInBounds(int[][] matrix, Cell start, Cell target) {
+        controlBounds(matrix, start);
+        controlBounds(matrix, target);
     }
 
     private void controlBounds(int[][] matrix, Cell cell) {
