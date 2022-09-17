@@ -33,6 +33,9 @@ public class Student {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        if (studentCourseRecords == null) {
+            studentCourseRecords = new HashSet<>();
+        }
     }
 
     public void addCourse(LecturerCourseRecord lecturerCourseRecord) {

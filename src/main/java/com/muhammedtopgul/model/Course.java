@@ -24,6 +24,10 @@ public class Course {
         this.code = code;
     }
 
+    public Course(int code) {
+        this(String.valueOf(code));
+    }
+
     public static Course createNewCourse(String courseCode) {
         return new Course(courseCode);
     }
