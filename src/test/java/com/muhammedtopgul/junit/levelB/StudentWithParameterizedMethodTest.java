@@ -9,10 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -135,6 +132,51 @@ public class StudentWithParameterizedMethodTest {
                     Arguments.of("101", CourseType.MANDATORY),
                     Arguments.of("102", CourseType.ELECTIVE),
                     Arguments.of("103", CourseType.MANDATORY)
+            );
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class CsvSourceTest {
+        private int studentCourseSize = 0;
+
+        @BeforeAll
+        void setUp() {
+            student = new Student("1", "Muhammed", "Topgul");
+        }
+
+        @ParameterizedTest(name = "{index}. New Course ({arguments}) Record Added with Code")
+        @CsvSource(value = {"101,MANDATORY", "102,ELECTIVE", "103,MANDATORY"})
+        void addCourseToStudent(String courseCode, CourseType courseType) {
+            Course course = new Course(courseCode, courseType);
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            studentCourseSize++;
+            assertEquals(studentCourseSize, student.getStudentCourseRecords().size());
+            assertTrue(student.isTakeCourse(new Course(courseCode)));
+            assumingThat(courseCode.equals("101") || courseCode.equals("103"),
+                    () -> assertEquals(CourseType.MANDATORY, courseType)
+            );
+            assumingThat(courseCode.equals("102"),
+                    () -> assertEquals(CourseType.ELECTIVE, courseType)
+            );
+        }
+
+        @ParameterizedTest(name = "{index}. New Course ({arguments}) Record Added with Code")
+        @CsvFileSource(resources = "/courseCodeAndTypes.csv", numLinesToSkip = 1)
+        void addCourseToStudentWithCsvFile(String courseCode, CourseType courseType) {
+            Course course = new Course(courseCode, courseType);
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            studentCourseSize++;
+            assertEquals(studentCourseSize, student.getStudentCourseRecords().size());
+            assertTrue(student.isTakeCourse(new Course(courseCode)));
+            assumingThat(courseCode.equals("101") || courseCode.equals("103"),
+                    () -> assertEquals(CourseType.MANDATORY, courseType)
+            );
+            assumingThat(courseCode.equals("102"),
+                    () -> assertEquals(CourseType.ELECTIVE, courseType)
             );
         }
     }
