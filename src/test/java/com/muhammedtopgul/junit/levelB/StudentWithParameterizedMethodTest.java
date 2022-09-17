@@ -8,6 +8,7 @@ import com.muhammedtopgul.model.Student;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
@@ -166,6 +167,34 @@ public class StudentWithParameterizedMethodTest {
         @ParameterizedTest(name = "{index}. New Course ({arguments}) Record Added with Code")
         @CsvFileSource(resources = "/courseCodeAndTypes.csv", numLinesToSkip = 1)
         void addCourseToStudentWithCsvFile(String courseCode, CourseType courseType) {
+            Course course = new Course(courseCode, courseType);
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            studentCourseSize++;
+            assertEquals(studentCourseSize, student.getStudentCourseRecords().size());
+            assertTrue(student.isTakeCourse(new Course(courseCode)));
+            assumingThat(courseCode.equals("101") || courseCode.equals("103"),
+                    () -> assertEquals(CourseType.MANDATORY, courseType)
+            );
+            assumingThat(courseCode.equals("102"),
+                    () -> assertEquals(CourseType.ELECTIVE, courseType)
+            );
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class ArgumentSourceTest {
+        private int studentCourseSize = 0;
+
+        @BeforeAll
+        void setUp() {
+            student = new Student("1", "Muhammed", "Topgul");
+        }
+
+        @ParameterizedTest(name = "{index}. New Course ({arguments}) Record Added with Code")
+        @ArgumentsSource(value = CourseCodeAndTypeProvider.class)
+        void addCourseToStudent(String courseCode, CourseType courseType) {
             Course course = new Course(courseCode, courseType);
             LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
             student.addCourse(lecturerCourseRecord);
