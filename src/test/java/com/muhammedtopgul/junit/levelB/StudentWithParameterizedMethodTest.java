@@ -9,12 +9,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Random;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 /**
  * @author muhammed-topgul
@@ -82,6 +86,56 @@ public class StudentWithParameterizedMethodTest {
             assertFalse(student.getStudentCourseRecords().isEmpty());
             assertTrue(student.isTakeCourse(course));
             assertEquals(CourseType.ELECTIVE, course.getCourseType());
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class MethodSourceTest {
+        private int studentCourseSize = 0;
+
+        @BeforeAll
+        void setUp() {
+            student = new Student("1", "Muhammed", "Topgul");
+        }
+
+        @ParameterizedTest(name = "{index}. New Course ({arguments}) Record Added with Code")
+        @MethodSource(value = "getCourseCodes")
+        void addCourseToStudent(String courseCode) {
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(new Course(courseCode), new Semester());
+            student.addCourse(lecturerCourseRecord);
+            studentCourseSize++;
+            assertEquals(studentCourseSize, student.getStudentCourseRecords().size());
+            assertTrue(student.isTakeCourse(new Course(courseCode)));
+        }
+
+        private Stream<String> getCourseCodes() {
+            return Stream.of("101", "102", "103");
+        }
+
+        @ParameterizedTest(name = "{index}. New Course ({arguments}) Record Added with Code")
+        @MethodSource(value = "getCourseCodesAndTypes")
+        void addCourseToStudent(String courseCode, CourseType courseType) {
+            Course course = new Course(courseCode, courseType);
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            studentCourseSize++;
+            assertEquals(studentCourseSize, student.getStudentCourseRecords().size());
+            assertTrue(student.isTakeCourse(new Course(courseCode)));
+            assumingThat(courseCode.equals("101") || courseCode.equals("103"),
+                    () -> assertEquals(CourseType.MANDATORY, courseType)
+            );
+            assumingThat(courseCode.equals("102"),
+                    () -> assertEquals(CourseType.ELECTIVE, courseType)
+            );
+        }
+
+        private Stream<Arguments> getCourseCodesAndTypes() {
+            return Stream.of(
+                    Arguments.of("101", CourseType.MANDATORY),
+                    Arguments.of("102", CourseType.ELECTIVE),
+                    Arguments.of("103", CourseType.MANDATORY)
+            );
         }
     }
 }

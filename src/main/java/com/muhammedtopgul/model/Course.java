@@ -28,6 +28,11 @@ public class Course {
         this(String.valueOf(code));
     }
 
+    public Course(String code, CourseType courseType) {
+        this.code = code;
+        this.courseType = courseType;
+    }
+
     public static Course createNewCourse(String courseCode) {
         return new Course(courseCode);
     }
