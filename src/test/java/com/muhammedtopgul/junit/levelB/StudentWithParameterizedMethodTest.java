@@ -8,10 +8,12 @@ import com.muhammedtopgul.model.Student;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.converter.JavaTimeConversionPattern;
 import org.junit.jupiter.params.provider.*;
 
+import java.time.LocalDate;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -207,6 +209,53 @@ public class StudentWithParameterizedMethodTest {
             assumingThat(courseCode.equals("102"),
                     () -> assertEquals(CourseType.ELECTIVE, courseType)
             );
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class ParameterTypeConversionTest {
+        @BeforeAll
+        void setUp() {
+            student = new Student("1", "Muhammed", "Topgul");
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"MANDATORY", "ELECTIVE"})
+        void addCourseToStudent(CourseType courseType) {
+            Course course = Course.builder().code(String.valueOf(new Random().nextInt(200))).courseType(courseType).build();
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            assertFalse(student.getStudentCourseRecords().isEmpty());
+            assertTrue(student.isTakeCourse(course));
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"101", "102"})
+        void addCourseToStudent(Course course) {
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            assertFalse(student.getStudentCourseRecords().isEmpty());
+            assertTrue(student.isTakeCourse(course));
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"101", "102"})
+        void addCourseToStudentWithConverter(@ConvertWith(CourseConvertor.class) Course course) {
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester());
+            student.addCourse(lecturerCourseRecord);
+            assertFalse(student.getStudentCourseRecords().isEmpty());
+            assertTrue(student.isTakeCourse(course));
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"01.09.2018", "01.01.2018", "01.06.2018"})
+        void addCourseToStudentWithLocalDate(@JavaTimeConversionPattern("dd.MM.yyyy") LocalDate localDate) {
+            Course course = Course.builder().code(String.valueOf(new Random().nextInt(200))).build();
+            LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(course, new Semester(localDate));
+            student.addCourse(lecturerCourseRecord);
+            assertFalse(student.getStudentCourseRecords().isEmpty());
+            assertTrue(student.isTakeCourse(course));
         }
     }
 }
