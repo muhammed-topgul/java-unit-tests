@@ -1,4 +1,4 @@
-package com.muhammedtopgul.junit.levelC;
+package com.muhammedtopgul.junit.levelC.extension;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
