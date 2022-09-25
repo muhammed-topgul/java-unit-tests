@@ -1,4 +1,4 @@
-package com.muhammedtopgul.junit.levelB;
+package com.muhammedtopgul.junit.levelB.domain;
 
 import com.muhammedtopgul.enumeration.CourseType;
 import com.muhammedtopgul.model.Course;

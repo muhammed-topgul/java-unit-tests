@@ -1,4 +1,4 @@
-package com.muhammedtopgul.junit.levelB;
+package com.muhammedtopgul.junit.levelB.domain;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
