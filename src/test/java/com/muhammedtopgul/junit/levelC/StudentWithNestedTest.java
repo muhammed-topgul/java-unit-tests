@@ -3,6 +3,7 @@ package com.muhammedtopgul.junit.levelC;
 import com.muhammedtopgul.exception.NotActiveSemesterException;
 import com.muhammedtopgul.model.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
  * @author muhammed-topgul
  * @since 15/09/2022 01:37
  */
+@ExtendWith(TestLoggerExtension.class)
 @DisplayName("Level C (High Level) Student with Nested Tests")
 public class StudentWithNestedTest {
     private Student student001;
