@@ -8,9 +8,9 @@ import java.time.Duration;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 /**
  * @author muhammed-topgul
@@ -180,6 +180,25 @@ public class StudentWithNestedTest {
             assertTimeout(Duration.ofMillis(6), () -> student001.addCourse(lecturerCourseRecord));
 
             assertTimeoutPreemptively(Duration.ofMillis(6), () -> student001.addCourse(lecturerCourseRecord));
+        }
+    }
+
+    @Nested
+    @DisplayName("Drop Course from Student")
+    class DropCourseFromStudent {
+        @TestFactory
+        Stream<DynamicTest> dropCourseFromStudentFactory() {
+            final Student student = new Student("1", "Muhammed", "Topgul");
+            return Stream.of(
+                    dynamicTest("Throws IllegalArgumentException for null lecturer course record",
+                            () -> {
+                                assertThrows(IllegalArgumentException.class, () -> student.dropCourse(null));
+                            }),
+                    dynamicTest("Throws IllegalArgumentException if the student did not register course before",
+                            () -> {
+                                assertThrows(IllegalArgumentException.class, () -> student.dropCourse(new LecturerCourseRecord()));
+                            })
+            );
         }
     }
 }
