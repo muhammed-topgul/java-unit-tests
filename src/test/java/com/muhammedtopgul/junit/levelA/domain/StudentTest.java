@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
  * @author muhammed-topgul
  * @since 11/09/2022 16:38
  */
-@DisplayName("Level A (Beginner) Student Tests")
+@DisplayName("Level A (Beginner Level) Student Tests")
 @Tag("student")
 public class StudentTest {
     private Student student001;

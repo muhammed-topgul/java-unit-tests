@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author muhammed-topgul
  * @since 25/09/2022 22:04
  */
+@DisplayName("Level B (Intermediate Level) Prime Factor Test")
 public class PrimeFactorTest {
     private final Map<Integer, List<Integer>> primeFactorExpectations = new HashMap<>();
 

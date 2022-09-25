@@ -5,6 +5,7 @@ import com.muhammedtopgul.model.Course;
 import com.muhammedtopgul.model.LecturerCourseRecord;
 import com.muhammedtopgul.model.Semester;
 import com.muhammedtopgul.model.Student;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
  * @author muhammed-topgul
  * @since 19/09/2022 12:15
  */
+@DisplayName("Level B (Intermediate Level) Student with Dynamic Test")
 public class StudentWithDynamicTest {
     @TestFactory
     Stream<DynamicNode> addCourseToStudentWithCourseCodeAndCourseType() {

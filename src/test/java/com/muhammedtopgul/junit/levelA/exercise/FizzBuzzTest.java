@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author muhammed-topgul
  * @since 11/09/2022 00:50
  */
-@DisplayName("Level A (Beginner)  FizzBuzz Tests")
+@DisplayName("Level A (Beginner Level)  FizzBuzz Tests")
 class FizzBuzzTest {
     private FizzBuzz fizzBuzz;
 

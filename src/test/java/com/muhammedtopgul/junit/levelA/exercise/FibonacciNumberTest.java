@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author muhammed-topgul
  * @since 12/09/2022 00:53
  */
-@DisplayName("Level A (Beginner) Fibonacci Number Tests")
+@DisplayName("Level A (Beginner Level) Fibonacci Number Tests")
 public class FibonacciNumberTest {
     @Test
     @DisplayName("Find Fibonacci Numbers for Specific Order")

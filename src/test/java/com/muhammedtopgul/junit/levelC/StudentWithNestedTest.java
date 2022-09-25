@@ -1,4 +1,4 @@
-package com.muhammedtopgul.junit.levelB.domain;
+package com.muhammedtopgul.junit.levelC;
 
 import com.muhammedtopgul.exception.NotActiveSemesterException;
 import com.muhammedtopgul.model.*;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
  * @author muhammed-topgul
  * @since 15/09/2022 01:37
  */
-@DisplayName("Level B (Intermediate Level) Student with Nested Tests")
+@DisplayName("Level C (High Level) Student with Nested Tests")
 public class StudentWithNestedTest {
     private Student student001;
     private Student student002;

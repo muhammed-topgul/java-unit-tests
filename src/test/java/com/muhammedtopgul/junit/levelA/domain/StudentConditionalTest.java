@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author muhammed-topgul
  * @since 11/09/2022 18:31
  */
-@DisplayName("Level A (Beginner) Student Conditional Tests")
+@DisplayName("Level A (Beginner Level) Student Conditional Tests")
 @EnabledOnOs(OS.WINDOWS)
 public class StudentConditionalTest {
     private Student student001;

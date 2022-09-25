@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author muhammed-topgul
  * @since 18/09/2022 00:31
  */
-@DisplayName("Level B (Intermediate) Student Test with TestInfo and TestReporter Parameters")
+@DisplayName("Level B (Intermediate Level) Student Test with TestInfo and TestReporter Parameters")
 public class StudentParameterizedTest {
     private Student student;
 

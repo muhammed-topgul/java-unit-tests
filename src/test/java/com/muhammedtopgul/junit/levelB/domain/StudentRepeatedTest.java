@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 18/09/2022 01:10
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("Level B (Intermediate Level) Student Repeated Test")
 public class StudentRepeatedTest implements TestLifeCycleReporter {
     private Student student;
 

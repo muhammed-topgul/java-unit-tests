@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author muhammed-topgul
  * @since 15/09/2022 01:23
  */
-@DisplayName("Level B (Intermediate) Student with Test Life Cycle Tests")
+@DisplayName("Level B (Intermediate Level) Student with Test Life Cycle Tests")
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StudentWithTestLifeCycleTest {
     private Student student001 = new Student("1", "Muhammed", "Topgul");

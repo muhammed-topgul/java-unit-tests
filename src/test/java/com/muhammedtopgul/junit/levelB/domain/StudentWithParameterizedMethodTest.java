@@ -6,6 +6,7 @@ import com.muhammedtopgul.model.LecturerCourseRecord;
 import com.muhammedtopgul.model.Semester;
 import com.muhammedtopgul.model.Student;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
  * @author muhammed-topgul
  * @since 18/09/2022 01:23
  */
+@DisplayName("Level B (Intermediate Level) Student with Parameterized Method Test")
 public class StudentWithParameterizedMethodTest {
     private Student student;
 
