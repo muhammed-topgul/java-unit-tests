@@ -38,6 +38,11 @@ public class Student {
         }
     }
 
+    public Student(String id, String name, String surname, Set<StudentCourseRecord> studentCourseRecords) {
+        this(id, name, surname);
+        this.studentCourseRecords.addAll(studentCourseRecords);
+    }
+
     public void addCourse(LecturerCourseRecord lecturerCourseRecord) {
         if (lecturerCourseRecord == null) {
             throw new IllegalArgumentException("Can't add course with null lecturer course record");

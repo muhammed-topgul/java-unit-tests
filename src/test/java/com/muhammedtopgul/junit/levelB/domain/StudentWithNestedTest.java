@@ -1,10 +1,13 @@
 package com.muhammedtopgul.junit.levelB.domain;
 
-import com.muhammedtopgul.model.LecturerCourseRecord;
-import com.muhammedtopgul.model.Student;
+import com.muhammedtopgul.exception.NotActiveSemesterException;
+import com.muhammedtopgul.model.*;
 import org.junit.jupiter.api.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -184,21 +187,65 @@ public class StudentWithNestedTest {
     }
 
     @Nested
-    @DisplayName("Drop Course from Student")
-    class DropCourseFromStudent {
+    @DisplayName("Drop Course")
+    class DropCourse {
         @TestFactory
         Stream<DynamicTest> dropCourseFromStudentFactory() {
-            final Student student = new Student("1", "Muhammed", "Topgul");
+            final Student student001 = new Student("1", "Muhammed", "Topgul");
             return Stream.of(
-                    dynamicTest("Throws IllegalArgumentException for null lecturer course record",
-                            () -> {
-                                assertThrows(IllegalArgumentException.class, () -> student.dropCourse(null));
-                            }),
-                    dynamicTest("Throws IllegalArgumentException if the student did not register course before",
-                            () -> {
-                                assertThrows(IllegalArgumentException.class, () -> student.dropCourse(new LecturerCourseRecord()));
-                            })
+                    dynamicTest("throws illegal argument exception for null lecturer course record", () -> {
+                        assertThrows(IllegalArgumentException.class, () -> student001.dropCourse(null));
+                    }),
+                    dynamicTest("throws illegal argument exception if the student001 did't register course before", () -> {
+                        final LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(new Course("101"), new Semester());
+                        assertThrows(IllegalArgumentException.class, () -> student001.dropCourse(lecturerCourseRecord));
+                    }),
+                    dynamicTest("throws not active semester exception if the semester is not active", () -> {
+                        final Semester notActiveSemester = notActiveSemester();
+                        assumeTrue(!notActiveSemester.isActive());
+                        final LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(new Course("101"), notActiveSemester);
+                        Student student002 = new Student("1", "Muhammed", "Topgul", Set.of(new StudentCourseRecord(lecturerCourseRecord)));
+                        assertThrows(NotActiveSemesterException.class, () -> student002.dropCourse(lecturerCourseRecord));
+                    }),
+                    dynamicTest("throws not active semester exception if the add drop period is closed for the semester", () -> {
+                        final Semester addDropPeriodClosedSemester = addDropPeriodClosedSemester();
+                        assumeTrue(!addDropPeriodClosedSemester.isAddDropAllowed());
+                        final LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(new Course("101"), addDropPeriodClosedSemester);
+                        Student student002 = new Student("1", "Muhammed", "Topgul", Set.of(new StudentCourseRecord(lecturerCourseRecord)));
+                        assertThrows(NotActiveSemesterException.class, () -> student002.dropCourse(lecturerCourseRecord));
+                    }),
+                    dynamicTest("drop course from student", () -> {
+                        final Semester addDropPeriodOpenSemester = addDropPeriodOpenSemester();
+                        assumeTrue(addDropPeriodOpenSemester.isAddDropAllowed());
+                        final LecturerCourseRecord lecturerCourseRecord = new LecturerCourseRecord(new Course("101"), addDropPeriodOpenSemester);
+                        Student student002 = new Student("1", "Muhammed", "Topgul", Set.of(new StudentCourseRecord(lecturerCourseRecord)));
+                        assertEquals(1, student002.getStudentCourseRecords().size());
+                        student002.dropCourse(lecturerCourseRecord);
+                        assertTrue(student002.getStudentCourseRecords().isEmpty());
+                    })
             );
+        }
+
+        private Semester addDropPeriodOpenSemester() {
+            final Semester activeSemester = new Semester();
+            final LocalDate semesterDate = LocalDate.of(activeSemester.getYear(), activeSemester.getTerm().getStartMonth(), 1);
+            final LocalDate now = LocalDate.now();
+            activeSemester.setAddDropPeriodInWeek(Long.valueOf(semesterDate.until(now, ChronoUnit.WEEKS) + 1).intValue());
+            return activeSemester;
+        }
+
+        private Semester addDropPeriodClosedSemester() {
+            final Semester activeSemester = new Semester();
+            activeSemester.setAddDropPeriodInWeek(0);
+            if (LocalDate.now().getDayOfMonth() == 1) {
+                activeSemester.setAddDropPeriodInWeek(-1);
+            }
+            return activeSemester;
+        }
+
+        private Semester notActiveSemester() {
+            final Semester activeSemester = new Semester();
+            return new Semester(LocalDate.of(activeSemester.getYear() - 1, 1, 1));
         }
     }
 }
