@@ -43,6 +43,11 @@ public class Student {
         this.studentCourseRecords.addAll(studentCourseRecords);
     }
 
+    public Student(String id, String name, String surname, LocalDate birthDate) {
+        this(id, name, surname);
+        this.birthDate = birthDate;
+    }
+
     public void addCourse(LecturerCourseRecord lecturerCourseRecord) {
         if (lecturerCourseRecord == null) {
             throw new IllegalArgumentException("Can't add course with null lecturer course record");
