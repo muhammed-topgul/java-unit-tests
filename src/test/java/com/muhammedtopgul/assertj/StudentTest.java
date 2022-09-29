@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author muhammed-topgul
@@ -133,6 +132,30 @@ public class StudentTest {
 
         CustomStudentAssertion.assertThat(muhammed)
                 .as("Student Custom Assertion")
-                .hasName("Muhamxmed");
+                .hasName("Muhammed");
+    }
+
+    @Test
+    void addCourseToStudentWithExceptionalCases() {
+        final Student muhammed = new Student("1", "Muhammed", "Topgul");
+
+        assertThatThrownBy(() -> muhammed.addCourse(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Can't add course with")
+                .hasStackTraceContaining("Student");
+
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> muhammed.addCourse(null))
+                .withMessageContaining("Can't add course with")
+                .withNoCause();
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> muhammed.addCourse(null))
+                .withMessageContaining("Can't add course with")
+                .withNoCause();
+
+        assertThatCode(() -> muhammed.addCourse(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Can't add course with");
     }
 }
