@@ -20,7 +20,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student {
+public class Student implements Person {
     private String id;
     private String name;
     private String surname;

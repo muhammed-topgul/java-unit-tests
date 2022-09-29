@@ -1,9 +1,6 @@
 package com.muhammedtopgul.assertj;
 
-import com.muhammedtopgul.model.Course;
-import com.muhammedtopgul.model.LecturerCourseRecord;
-import com.muhammedtopgul.model.Semester;
-import com.muhammedtopgul.model.Student;
+import com.muhammedtopgul.model.*;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -112,5 +109,30 @@ public class StudentTest {
                 .hasSize(5)
                 .filteredOn(studentCourseRecord -> studentCourseRecord.getLecturerCourseRecord().getCourse().getCode().equals("101"))
                 .hasSize(2);
+    }
+
+    @Test
+    void anotherCreateStudentTest() {
+        final Student muhammed = new Student("1", "Muhammed", "Topgul");
+        final Student john = new Student("2", "John", "Topgul");
+
+        assertThat(muhammed)
+                .as("Check Student Info")
+                .isNotNull()
+                .hasSameClassAs(john)
+                .isExactlyInstanceOf(Student.class)
+                .isInstanceOf(Person.class)
+                .isNotEqualTo(john)
+                .isEqualToComparingOnlyGivenFields(john, "surname")
+                .isEqualToIgnoringGivenFields(john, "id", "name", "birthDate")
+                .matches(student -> student.getName().equals("Muhammed"))
+                .hasFieldOrProperty("name")
+                // .hasNoNullFieldsOrProperties()
+                .extracting(Student::getName, Student::getSurname)
+                .containsOnly("Muhammed", "Topgul");
+
+        CustomStudentAssertion.assertThat(muhammed)
+                .as("Student Custom Assertion")
+                .hasName("Muhamxmed");
     }
 }
