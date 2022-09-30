@@ -1,5 +1,6 @@
 package com.muhammedtopgul.mockito.service;
 
+import com.muhammedtopgul.enumeration.Grade;
 import com.muhammedtopgul.model.*;
 import com.muhammedtopgul.repository.StudentRepository;
 import com.muhammedtopgul.service.CourseService;
@@ -10,10 +11,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 
@@ -122,5 +125,47 @@ class StudentServiceWithAnnotationTest {
         assertThat(studentArgumentCaptor.getAllValues())
                 .hasSize(3)
                 .containsOnly(student);
+    }
+
+    @Test
+    void getTranscriptOfStudent() {
+        List<Grade> grades = Arrays.asList(Grade.values());
+        Semester semester = new Semester(LocalDate.of(2015, 1, 1));
+
+        Student student = Mockito.mock(Student.class);
+
+        Mockito.when(studentRepository.findById("1"))
+                .thenReturn(Optional.of(student));
+        Mockito.when(student.getStudentCourseRecords())
+                .thenAnswer(invocation -> {
+                    return Stream.of("101", "103", "105", "107", "109")
+                            .map(Course::new)
+                            .map(course -> new LecturerCourseRecord(course, semester))
+                            .peek(lecturerCourseRecord -> lecturerCourseRecord.setCredit(new Random().nextInt(3)))
+                            .map(StudentCourseRecord::new)
+                            .peek(studentCourseRecord -> {
+                                Collections.shuffle(grades);
+                                studentCourseRecord.setGrade(grades.get(0));
+                            }).collect(Collectors.toSet());
+                });
+
+        assertThat(studentService.transcript("1"))
+                .hasSize(5)
+                .extracting(Transcript::getCourse)
+                .extracting(Course::getCode)
+                .containsOnly("101", "103", "105", "107", "109");
+
+        assertThat(studentService.transcript("1"))
+                .extracting(Transcript::getCredit)
+                .containsAnyOf(1, 2, 3);
+
+        assertThat(studentService.transcript("1"))
+                .extracting(Transcript::getGrade)
+                .containsAnyOf(Grade.A1, Grade.A2, Grade.B1, Grade.B2, Grade.C, Grade.D, Grade.E, Grade.F);
+
+        assertThat(studentService.transcript("1"))
+                .filteredOn(transcript -> transcript.getCourse().getCode().equals("101"))
+                .extracting(Transcript::getCourse, Transcript::getSemester)
+                .containsOnly(tuple(new Course("101"), new Semester(LocalDate.of(2015, 1, 1))));
     }
 }
