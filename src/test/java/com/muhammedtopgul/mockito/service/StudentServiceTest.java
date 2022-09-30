@@ -1,7 +1,12 @@
-package com.muhammedtopgul.service;
+package com.muhammedtopgul.mockito.service;
 
 import com.muhammedtopgul.model.*;
 import com.muhammedtopgul.repository.StudentRepository;
+import com.muhammedtopgul.service.CourseService;
+import com.muhammedtopgul.service.LecturerService;
+import com.muhammedtopgul.service.StudentService;
+import com.muhammedtopgul.service.StudentServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -17,6 +22,7 @@ import static org.mockito.ArgumentMatchers.argThat;
  * @author muhammed-topgul
  * @since 30/09/2022 16:48
  */
+@DisplayName("Mockito Student Service Tests")
 class StudentServiceTest {
     @Test
     void addCourse() {
