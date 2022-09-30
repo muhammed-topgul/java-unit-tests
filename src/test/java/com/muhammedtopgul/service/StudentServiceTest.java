@@ -10,6 +10,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 
 
 /**
@@ -49,5 +50,19 @@ class StudentServiceTest {
                 .isPresent()
                 .get()
                 .matches(student -> student.isTakeCourse(course));
+
+        // Verify
+        Mockito.verify(courseService).findCourse(course);
+        Mockito.verify(courseService, Mockito.times(1)).findCourse(course);
+        Mockito.verify(courseService, Mockito.atLeast(1)).findCourse(course);
+        Mockito.verify(courseService, Mockito.atMost(1)).findCourse(course);
+
+        Mockito.verify(studentRepository, Mockito.times(2)).findById(any(String.class));
+        Mockito.verify(studentRepository, Mockito.atLeast(1)).findById(any(String.class));
+        Mockito.verify(studentRepository, Mockito.atMost(2)).findById(any());
+
+        Mockito.verify(lecturerService).findLecturer(any(Course.class), any(Semester.class));
+
+        Mockito.verify(lecturer).lecturerCourseRecord(argThat(arg -> arg.getCode().equals("101")), any(Semester.class));
     }
 }
