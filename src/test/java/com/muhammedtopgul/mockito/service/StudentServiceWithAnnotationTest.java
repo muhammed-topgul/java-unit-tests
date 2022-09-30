@@ -4,7 +4,6 @@ import com.muhammedtopgul.model.*;
 import com.muhammedtopgul.repository.StudentRepository;
 import com.muhammedtopgul.service.CourseService;
 import com.muhammedtopgul.service.LecturerService;
-import com.muhammedtopgul.service.StudentService;
 import com.muhammedtopgul.service.StudentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +16,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 
 
 /**
@@ -87,5 +87,29 @@ class StudentServiceWithAnnotationTest {
         Mockito.verify(lecturerService).findLecturer(any(Course.class), any(Semester.class));
 
         Mockito.verify(lecturer).lecturerCourseRecord(argThat(arg -> arg.getCode().equals("101")), any(Semester.class));
+    }
+
+    @Test
+    void deleteStudent() {
+        Student student = new Student("1", "Muhammed", "Topgul");
+
+        Mockito.when(studentRepository.findById(anyString()))
+                .thenAnswer(invocation -> Optional.of(student));
+
+        doNothing()
+                .doThrow(new IllegalArgumentException("There is no student in repo"))
+                .doAnswer(invocation -> {
+                    Student argument = invocation.getArgument(0);
+                    System.out.printf("Student(%s) will be deleted.%n", argument);
+                    return null;
+                }).when(studentRepository).delete(student);
+
+        studentService.deleteStudent("1");
+        assertThatIllegalArgumentException().isThrownBy(() -> studentService.deleteStudent("1"))
+                .withMessageContaining("There is no student");
+        studentService.deleteStudent("1");
+
+        Mockito.verify(studentRepository, Mockito.times(3)).findById("1");
+        Mockito.verify(studentRepository, Mockito.times(3)).delete(student);
     }
 }
