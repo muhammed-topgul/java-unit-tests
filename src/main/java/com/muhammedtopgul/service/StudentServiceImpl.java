@@ -57,7 +57,6 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Can't find a student with id<%s>", studentId)));
     }
 
-
     @Override
     public void dropCourse(String studentId, Course course) {
 

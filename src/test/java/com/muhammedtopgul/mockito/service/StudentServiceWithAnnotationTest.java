@@ -8,10 +8,7 @@ import com.muhammedtopgul.service.StudentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.util.Optional;
 
@@ -47,6 +44,12 @@ class StudentServiceWithAnnotationTest {
     void initMocks() {
         MockitoAnnotations.initMocks(this);
     }
+
+    @Captor
+    private ArgumentCaptor<String> stringArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<Student> studentArgumentCaptor;
 
     @Test
     void addCourse() {
@@ -109,7 +112,15 @@ class StudentServiceWithAnnotationTest {
                 .withMessageContaining("There is no student");
         studentService.deleteStudent("1");
 
-        Mockito.verify(studentRepository, Mockito.times(3)).findById("1");
-        Mockito.verify(studentRepository, Mockito.times(3)).delete(student);
+        Mockito.verify(studentRepository, Mockito.times(3)).findById(stringArgumentCaptor.capture());
+        Mockito.verify(studentRepository, Mockito.times(3)).delete(studentArgumentCaptor.capture());
+
+        assertThat(stringArgumentCaptor.getAllValues())
+                .hasSize(3)
+                .containsOnly("1", "1", "1");
+
+        assertThat(studentArgumentCaptor.getAllValues())
+                .hasSize(3)
+                .containsOnly(student);
     }
 }
